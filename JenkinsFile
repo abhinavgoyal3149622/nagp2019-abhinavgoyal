@@ -23,7 +23,7 @@ pipeline
 			steps
 			{
 				echo  " ********** Clone starts ******************"
-				checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], gitTool: 'default', submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'b88ca4e2-c290-4634-b441-77891f0979fe', url: 'https://git.nagarro.com/devopscoe/nagp2019/abhinavgoyal.git']]])
+				checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], gitTool: 'default', submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/abhinavgoyal3149622/nagp2019-abhinavgoyal.git']]])
 			}
 		}
 		stage ('nuget')
