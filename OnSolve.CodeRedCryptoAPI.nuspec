@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>OnSolve.CodeRedCryptoAPI</id>
+    <version>{FCR-coderedcryptoapi-version}</version>
+    <authors>teamcityagent@TCBUILD01</authors>
+    <owners>teamcityagent@TCBUILD01</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A package which contains a docker compose file for CodeRedCryptoAPI service.</description>
+  </metadata>
+  <files>
+    <file src="docker-compose.yml" target="" />
+    <file src=".env" target="" />
+    <file src="nuget.config" target="" />
+  </files>
+</package>

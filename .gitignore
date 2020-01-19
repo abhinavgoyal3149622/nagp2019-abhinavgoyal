@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/CodeRedCryptoAPI/bin
+/CodeRedCryptoAPI/obj
+/CodeRedCryptoAPI/Properties/PublishProfiles
+/.vs
+/CodeRedCryptoAPI/logs
+/.dockerignore
