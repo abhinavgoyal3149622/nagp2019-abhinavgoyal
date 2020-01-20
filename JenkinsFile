@@ -78,7 +78,7 @@ pipeline
 			steps
 			{
 				echo "****************** Build Docker image ****************"
-				bat "C:\Program Files\Docker\Docker build --no-cache -t ab665083/nagp_devops::${BUILD_NUMBER} ."
+				bat "\"C:\Program Files\Docker\Docker\" build --no-cache -t ab665083/nagp_devops:${BUILD_NUMBER} ."
 			}
 		}
 		stage ('Push to DTR')
@@ -86,7 +86,7 @@ pipeline
 			steps
 			{
 				echo "***************** Pushing image to Nagarro DTR or Docker Hub **********"
-				bat "C:\Program Files\Docker\Docker push ab665083/nagp_devops:${BUILD_NUMBER}"
+				bat "\"C:\Program Files\Docker\Docker\" push ab665083/nagp_devops:${BUILD_NUMBER}"
 			}
 		}
 		stage ('Stop Running container')
@@ -109,7 +109,7 @@ pipeline
 			steps
 			{
 			   echo "*************** Deploying latest war on Docker Containers **************"
-			   bat 'docker run --name dotnetcoreapp_abhinavgoyal -d -p 5006:80 dtr.nagarro.com:443/dotnetcoreapp_abhinavgoyal:${BUILD_NUMBER}'
+			   bat "docker run --name dotnetcoreapp_abhinavgoyal -d -p 5006:80 ab665083/nagp_devops:${BUILD_NUMBER}"
 			}
 		}
 	}
