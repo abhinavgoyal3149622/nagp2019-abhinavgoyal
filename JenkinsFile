@@ -61,7 +61,7 @@ pipeline
 				echo "*************** Executing Sonar analysis ***********"
 			withSonarQubeEnv('Test_Sonar')
 			{
-				bat "dotnet 'C:\\Program Files (x86)\\Jenkins\\tools\\hudson.plugins.sonar.MsBuildSQRunnerInstallation\\sonarscanner_nagp_dotnet\\SonarScanner.MSBuild.dll' end"
+				bat "dotnet ""C:\\Program Files (x86)\\Jenkins\\tools\\hudson.plugins.sonar.MsBuildSQRunnerInstallation\\sonarscanner_nagp_dotnet\\SonarScanner.MSBuild.dll"" end"
 			}
 			}
 		}
