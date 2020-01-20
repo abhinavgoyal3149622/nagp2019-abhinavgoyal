@@ -96,14 +96,7 @@ pipeline
 			steps
 			{
 				echo "*************** Removing already running conatiners *****************"
-				bat '''
-                ContainerID=$(docker ps | grep 5006 | cut -d " " -f 1)
-                if [  $ContainerID ]
-                then
-                    docker stop $ContainerID
-                    docker rm -f $ContainerID
-                fi
-            '''
+				
 			}
 		}
 		stage ('Docker deployment')
