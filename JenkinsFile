@@ -104,7 +104,7 @@ pipeline
 			steps
 			{
 			   echo "*************** Deploying latest war on Docker Containers **************"
-			   bat "docker run --name dotnetcoreapp_abhinavgoyal -d -p 10800:10800 -e ASPNETCORE_Kestrel__Certificates__Default__Password="12345678" -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx -v %USERPROFILE%\.aspnet\https:/https/ ab665083/nagp_devops:${BUILD_NUMBER}"
+			   bat "docker run --name dotnetcoreapp_abhinavgoyal -d -p 10800:10800 -e ASPNETCORE_Kestrel__Certificates__Default__Password="12345678" -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx -v %USERPROFILE%\\.aspnet\\https:/https/ ab665083/nagp_devops:${BUILD_NUMBER}"
 			}
 		}
 	}
