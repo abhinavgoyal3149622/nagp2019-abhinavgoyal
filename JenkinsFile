@@ -96,7 +96,7 @@ pipeline
 			steps
 			{
 				echo "*************** Removing already running conatiners *****************"
-				
+				bat "FOR /f "tokens=*" %%i IN ('docker ps -q') DO docker stop %%i"				
 			}
 		}
 		stage ('Docker deployment')
