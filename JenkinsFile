@@ -1,6 +1,6 @@
 pipeline
 {
-	
+	agent any 
 	agent {
     node {
         label 'master'
@@ -47,7 +47,7 @@ pipeline
 				echo "*********** starting sonar analysis ***********"
 				withSonarQubeEnv('Test_Sonar')
 			{
-				bat "dotnet ${scannerHome}\\SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "    
+				bat 'dotnet "C:\\Program Files (x86)\\Jenkins\\tools\\hudson.plugins.sonar.MsBuildSQRunnerInstallation\\sonarscanner_nagp_dotnet\\SonarScanner.MSBuild.dll" begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 '    
 			}
                 
 			}
