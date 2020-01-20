@@ -96,14 +96,7 @@ pipeline
 			steps
 			{
 				echo "*************** Removing already running conatiners *****************"
-				bat '''
-                ContainerID=$(docker ps | grep 5006 | cut -d " " -f 1)
-                if [  $ContainerID ]
-                then
-                    docker stop $ContainerID
-                    docker rm -f $ContainerID
-                fi
-            '''
+				
 			}
 		}
 		stage ('Docker deployment')
@@ -111,7 +104,7 @@ pipeline
 			steps
 			{
 			   echo "*************** Deploying latest war on Docker Containers **************"
-			   bat "docker run --name dotnetcoreapp_abhinavgoyal -d -p 5006:80 ab665083/nagp_devops:${BUILD_NUMBER}"
+			   bat "docker run --name dotnetcoreapp_abhinavgoyal -d -p 10800:10800 ab665083/nagp_devops:${BUILD_NUMBER}"
 			}
 		}
 	}
