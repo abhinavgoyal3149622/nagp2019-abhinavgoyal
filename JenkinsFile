@@ -1,11 +1,6 @@
 pipeline
 {
-	agent {
-    node {
-        label 'master'
-        customWorkspace 'C:/Jenkins/NAGP/workspace'
-    }
-} 
+	agent any 
 	environment
 	{
 		scannerHome = tool name: 'sonarscanner_nagp_dotnet', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'   
@@ -36,7 +31,7 @@ pipeline
 			steps
 			{
 				echo "************ restoring dependancies **********"
-				sh label: '', script: 'dotnet restore'
+				bat "dotnet restore"
 			}
 		}
 		stage ('Start sonarqube analysis')
@@ -46,7 +41,7 @@ pipeline
 				echo "*********** starting sonar analysis ***********"
 				withSonarQubeEnv('Test_Sonar')
 			{
-				sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "    
+				bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "    
 			}
                 
 			}
@@ -56,7 +51,7 @@ pipeline
 			steps
 			{
 				echo "************* building the solution **********"
-				sh "dotnet build -c Release -o WebApplication4/app/build"
+				bat "dotnet build -c Release -o WebApplication4/app/build"
 			}	
 		}
 		stage ('SonarQube Analysis end')
@@ -66,7 +61,7 @@ pipeline
 				echo "*************** Executing Sonar analysis ***********"
 			withSonarQubeEnv('Test_Sonar')
 			{
-				sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
+				bat "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
 			}
 			}
 		}
@@ -75,7 +70,7 @@ pipeline
 			steps
 			{
 				echo "************** Publishing app ***************"
-				sh "dotnet publish -c Release -o WebApplication4/app/publish"
+				bat "dotnet publish -c Release -o WebApplication4/app/publish"
 			}
 		}
 		stage ('Docker Image')
@@ -83,7 +78,7 @@ pipeline
 			steps
 			{
 				echo "****************** Build Docker image ****************"
-				sh returnStdout: true, script: '/bin/docker build --no-cache -t dtr.nagarro.com:443/dotnetcoreapp_abhinavgoyal:${BUILD_NUMBER} .'
+				bat returnStdout: true, script: '/bin/docker build --no-cache -t dtr.nagarro.com:443/dotnetcoreapp_abhinavgoyal:${BUILD_NUMBER} .'
 			}
 		}
 		stage ('Push to DTR')
@@ -91,7 +86,7 @@ pipeline
 			steps
 			{
 				echo "***************** Pushing image to Nagarro DTR or Docker Hub **********"
-				sh returnStdout: true, script: '/bin/docker push dtr.nagarro.com:443/dotnetcoreapp_abhinavgoyal:${BUILD_NUMBER}'
+				bat returnStdout: true, script: '/bin/docker push dtr.nagarro.com:443/dotnetcoreapp_abhinavgoyal:${BUILD_NUMBER}'
 			}
 		}
 		stage ('Stop Running container')
@@ -99,7 +94,7 @@ pipeline
 			steps
 			{
 				echo "*************** Removing already running conatiners *****************"
-				sh '''
+				bat '''
                 ContainerID=$(docker ps | grep 5006 | cut -d " " -f 1)
                 if [  $ContainerID ]
                 then
@@ -114,7 +109,7 @@ pipeline
 			steps
 			{
 			   echo "*************** Deploying latest war on Docker Containers **************"
-			   sh 'docker run --name dotnetcoreapp_abhinavgoyal -d -p 5006:80 dtr.nagarro.com:443/dotnetcoreapp_abhinavgoyal:${BUILD_NUMBER}'
+			   bat 'docker run --name dotnetcoreapp_abhinavgoyal -d -p 5006:80 dtr.nagarro.com:443/dotnetcoreapp_abhinavgoyal:${BUILD_NUMBER}'
 			}
 		}
 	}
