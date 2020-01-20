@@ -47,7 +47,7 @@ pipeline
 				echo "*********** starting sonar analysis ***********"
 				withSonarQubeEnv('Test_Sonar')
 			{
-				bat "dotnet C:\\Jenkins\\SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "    
+				bat "dotnet ${scannerHome}\\SonarScanner.MSBuild.dll begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "    
 			}
                 
 			}
