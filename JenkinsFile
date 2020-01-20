@@ -96,7 +96,7 @@ pipeline
 			steps
 			{
 				echo "*************** Removing already running conatiners *****************"
-				bat "FOR /f "tokens=*" %%i IN ('docker ps -q') DO docker stop %%i"				
+				bat "docker ps -q --filter \"name=dotnetcoreapp_abhinavgoyal\" && docker stop dotnetcoreapp_abhinavgoyal && docker rm -f dotnetcoreapp_abhinavgoyal"				
 			}
 		}
 		stage ('Docker deployment')
