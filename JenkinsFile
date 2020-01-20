@@ -86,7 +86,7 @@ pipeline
 			steps
 			{
 				echo "***************** Pushing image to Nagarro DTR or Docker Hub **********"
-				withDockerRegistry([ credentialsId: "dockernagp", url: "https://hub.docker.com/repository/docker" ]) {
+				withDockerRegistry(credentialsId: '03529a3a-484a-4655-af4f-f5d3f31b8eb2') {
 				bat "docker push ab665083/nagp_devops:${BUILD_NUMBER}"
 			}
 			}
