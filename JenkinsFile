@@ -1,6 +1,10 @@
 pipeline
 {
 	agent any
+	environment
+	{
+		scannerHome = tool name: 'sonarscanner_nagp_dotnet', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'   
+	}
 	options
    {
       timeout(time: 1, unit: 'HOURS')
@@ -37,7 +41,7 @@ pipeline
 				echo "*********** starting sonar analysis ***********"
 				withSonarQubeEnv('Test_Sonar')
 			{
-				bat "dotnet \"C:\\Program Files (x86)\\Jenkins\\tools\\hudson.plugins.sonar.MsBuildSQRunnerInstallation\\sonarscanner_nagp_dotnet\\SonarScanner.MSBuild.dll\" begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "    
+				bat "dotnet ${scannerHome}\\SonarScanner.MSBuild.dll\" begin /k:$JOB_NAME /n:$JOB_NAME /v:1.0 "    
 			}
                 
 			}
@@ -57,7 +61,7 @@ pipeline
 				echo "*************** Executing Sonar analysis ***********"
 			withSonarQubeEnv('Test_Sonar')
 			{
-				bat "dotnet \"C:\\Program Files (x86)\\Jenkins\\tools\\hudson.plugins.sonar.MsBuildSQRunnerInstallation\\sonarscanner_nagp_dotnet\\SonarScanner.MSBuild.dll\" end"
+				bat "dotnet ${scannerHome}\\SonarScanner.MSBuild.dll\" end"
 			}
 			}
 		}
@@ -67,7 +71,6 @@ pipeline
 			{
 				echo "************** Publishing app ***************"
 				bat """
-				rmdir /s /q CodeRedCryptoAPI/app/publish>NUL
 				dotnet publish -c Release -o CodeRedCryptoAPI/app/publish
 				"""
 			}
@@ -104,11 +107,14 @@ pipeline
 					for /f "tokens=1" %%r in ('FINDSTR "10800" Containers') do (
 						ECHO Container Id: %%r
 						SET ContainerId=%%r
-						IF NOT [%ContainerId%] == [] GOTO :RemoveContainer
 					)					
-					:RemoveContainer
-					docker rm -f %ContainerId%
-					ECHO Container Removed
+					IF NOT [%ContainerId%] == [] (
+                            docker rm -f %ContainerId%
+                        ECHO Container removed
+                        )
+                    IF [%ContainerId%] == [] (
+                        ECHO No container found                   
+                        )
 				"""
 								
 			}
