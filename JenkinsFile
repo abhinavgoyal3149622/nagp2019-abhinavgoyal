@@ -127,7 +127,7 @@ pipeline
 					ECHO ***End***
 				"""
 				echo "*************** Removing already running conatiners *****************"
-				bat "docker ps -q --filter \"name=dotnetcoreapp_abhinavgoyal\" && docker stop dotnetcoreapp_abhinavgoyal && docker rm -f dotnetcoreapp_abhinavgoyal"				
+								
 			}
 		}
 		stage ('Docker deployment')
