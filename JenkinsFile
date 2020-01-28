@@ -70,7 +70,10 @@ pipeline
 			steps
 			{
 				echo "************** Publishing app ***************"
-				bat "dotnet publish -c Release -o CodeRedCryptoAPI/app/publish"
+				bat """
+				rmdir /s /q CodeRedCryptoAPI/app/publish>NUL
+				dotnet publish -c Release -o CodeRedCryptoAPI/app/publish
+				"""
 			}
 		}
 		stage ('Docker Image')
@@ -95,6 +98,38 @@ pipeline
 		{
 			steps
 			{
+			bat """
+					@echo off
+					ECHO ***Start***
+					ECHO Check for running container
+					docker ps>Containers
+
+					for /f "tokens=1" %%b in ('FINDSTR "10800" Containers') do (
+						ECHO Container Id: %%b
+						SET ContainerId=%%b
+						IF NOT [%ContainerId%] == [] GOTO :StopAndRemoveContainer
+					)
+					ECHO No running container found
+					ECHO Check for all container
+					docker ps -all>Containers
+
+					for /f "tokens=1" %%a in ('FINDSTR "10800" Containers') do (
+						ECHO Container Id: %%a
+						SET ContainerId=%%a
+						IF NOT [%ContainerId%] == [] GOTO :RemoveContainer
+					)
+					ECHO No container found
+					GOTO :END
+					:StopAndRemoveContainer
+					docker stop %ContainerId%
+					ECHO Container Stoped
+					:RemoveContainer
+					docker rm -f %ContainerId%
+					ECHO Container Removed
+
+					:END
+					ECHO ***End***
+				"""
 				echo "*************** Removing already running conatiners *****************"
 				bat "docker ps -q --filter \"name=dotnetcoreapp_abhinavgoyal\" && docker stop dotnetcoreapp_abhinavgoyal && docker rm -f dotnetcoreapp_abhinavgoyal"				
 			}
